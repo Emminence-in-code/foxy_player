@@ -7,20 +7,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final fileProvider = FileProvider();
   await fileProvider.findFiles();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: (_) => ThemeProvider(),
-      ),
-      ChangeNotifierProvider(
-        create: (_) => NavigationProvider(),
-      ),
-      ChangeNotifierProvider(
-        create: (_) => fileProvider,
-      ),
-    ],
-    child: const MainApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NavigationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => fileProvider,
+        ),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {

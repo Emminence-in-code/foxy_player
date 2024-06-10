@@ -7,9 +7,9 @@ import 'package:list_all_videos/model/thumbnail_controller.dart';
 import 'package:list_all_videos/model/video_model.dart';
 
 class AudioItem extends StatelessWidget {
-  const AudioItem({super.key, required this.song, this.currentIndex});
+  const AudioItem({super.key, required this.song, });
   final Song song;
-  final int? currentIndex;
+
   @override
   Widget build(BuildContext context) {
     bool onGestureClick = false;
@@ -20,8 +20,9 @@ class AudioItem extends StatelessWidget {
         }
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>
-                AudioPlayerPage(currentSongIndex: currentIndex!),
+            builder: (context) => AudioPlayerPage(
+              song: song,
+            ),
           ),
         );
       },

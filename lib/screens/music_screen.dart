@@ -8,7 +8,6 @@ class MusicScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return RefreshIndicator(
       onRefresh: () async {
         await Provider.of<FileProvider>(context, listen: false).findFiles();
@@ -20,12 +19,10 @@ class MusicScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final song = playlist[index];
               return AudioItem(
-                currentIndex: index,
                 song: song,
               );
             });
       }),
     );
-    
   }
 }
