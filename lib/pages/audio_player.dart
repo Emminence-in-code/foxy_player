@@ -1,39 +1,62 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foxy_player/models/file_provider.dart';
 import 'package:foxy_player/services/song.dart';
 import 'package:foxy_player/widgets/audio_player.dart';
+import 'package:foxy_player/widgets/cirular_animted_container.dart';
 import 'package:foxy_player/widgets/neu_box.dart';
+import 'package:foxy_player/widgets/scrolling_text.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
-class AudioPlayerPage extends StatelessWidget {
+class AudioPlayerPage extends StatefulWidget {
   final Song song;
-  bool isPlaying = false;
-  AudioPlayerPage({super.key, required this.song});
 
+  const AudioPlayerPage({super.key, required this.song});
+
+  @override
+  State<AudioPlayerPage> createState() => _AudioPlayerPageState();
+}
+
+class _AudioPlayerPageState extends State<AudioPlayerPage> {
   final AudioPlayer audioPlayer = AudioPlayer();
-  late Duration? duration;
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer.durationStream.listen((event) {
+      print('${event!.inSeconds} seconds from stream');
+    });
+  }
 
-  // void getDuration() {
-  //   try {
+  @override
+  void dispose() async {
+    super.dispose();
+    await audioPlayer.dispose();
+  }
 
-  //         .then((value) => duration = value);
-  //     audioPlayer.play();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  Future<void> togglePlay() async {
+    if (audioPlayer.playing) {
+      await audioPlayer.pause();
+    } else {
+      await audioPlayer.play();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<Duration?>(
         future: audioPlayer
-            .setAudioSource(AudioSource.uri(Uri.parse(song.filePath))),
+            .setAudioSource(AudioSource.uri(Uri.parse(widget.song.filePath))),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          }
+
           return Consumer<FileProvider>(
               builder: (context, fileProvider, child) {
-            // getDuration();
+            audioPlayer.play();
             return Scaffold(
               body: SafeArea(
                 child: Padding(
@@ -42,19 +65,19 @@ class AudioPlayerPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                               icon: const Icon(FontAwesomeIcons.arrowLeft)),
+                          const SizedBox(
+                            width: 70,
+                          ),
                           const Text(
                             'Foxy Song',
                             style: TextStyle(letterSpacing: 3, fontSize: 20),
                           ),
-                          IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.menu))
                         ],
                       ),
                       const SizedBox(
@@ -63,25 +86,28 @@ class AudioPlayerPage extends StatelessWidget {
                       NeuBox(
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               height: 350,
+                              child: RotatingIconContainer(
+                                audioPlayer: audioPlayer,
+                              ),
                             ),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'currentSong title',
-                                        overflow: TextOverflow.ellipsis,
+                                      ScrollingText(
+                                        text: widget.song.title,
                                       ),
-                                      Text('By currentSong.artist'),
+                                      Text('By ${widget.song.artist}'),
                                     ],
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.favorite,
                                   color: Colors.red,
                                 )
@@ -106,10 +132,11 @@ class AudioPlayerPage extends StatelessWidget {
                       StreamBuilder<int?>(
                           stream: audioPlayer.currentIndexStream,
                           builder: (context, snapshot) {
-                            print(snapshot.data);
                             if (snapshot.hasData &&
                                 snapshot.connectionState ==
                                     ConnectionState.done) {
+                              print("${snapshot.data} built");
+
                               return AudioSlider(
                                   value: double.tryParse('${snapshot.data}'));
                             }
@@ -128,22 +155,17 @@ class AudioPlayerPage extends StatelessWidget {
                                 child: const Icon(Icons.skip_previous_rounded)),
                           )),
                           const SizedBox(width: 30),
-                          Expanded(
-                              flex: 2,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  await audioPlayer.play();
-                                },
-                                child: NeuBox(
-                                  child: const Icon(Icons.play_arrow_rounded),
-                                ),
-                              )),
+                          PausePlayButton(
+                            audioPlayer: audioPlayer,
+                          ),
                           const SizedBox(width: 30),
                           Expanded(
-                              child: GestureDetector(
-                                  child: NeuBox(
-                                      child: const Icon(
-                                          Icons.skip_next_rounded)))),
+                            child: GestureDetector(
+                              child: NeuBox(
+                                child: const Icon(Icons.skip_next_rounded),
+                              ),
+                            ),
+                          ),
                         ],
                       )
                     ],

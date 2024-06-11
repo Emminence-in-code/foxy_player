@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,8 @@ class ThemeSwitch extends StatefulWidget {
 }
 
 class _ThemeSwitchState extends State<ThemeSwitch> {
+  late bool isDark;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,11 +31,16 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Dark Mode'),
-            CupertinoSwitch(
-              value: Provider.of<ThemeProvider>(context).isDarkMode,
-              onChanged: (value) =>
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme(),
+            Consumer<ThemeProvider>(
+
+              builder: (context,theme,_) {
+                return CupertinoSwitch(
+                  value: theme.themeMode == ThemeMode.dark,
+                  onChanged: (value) =>
+                   
+                          theme.toggleTheme(),
+                );
+              }
             )
           ],
         ),

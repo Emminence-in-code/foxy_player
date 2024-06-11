@@ -7,17 +7,16 @@ import 'package:list_all_videos/model/thumbnail_controller.dart';
 import 'package:list_all_videos/model/video_model.dart';
 
 class AudioItem extends StatelessWidget {
-  const AudioItem({super.key, required this.song, });
+  const AudioItem({
+    super.key,
+    required this.song,
+  });
   final Song song;
 
   @override
   Widget build(BuildContext context) {
-    bool onGestureClick = false;
     return GestureDetector(
       onTap: () {
-        if (!onGestureClick) {
-          onGestureClick = true;
-        }
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => AudioPlayerPage(
@@ -61,9 +60,9 @@ class AudioItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(song.artist),
-                      Text(
-                        onGestureClick == false ? 'NEW' : '',
-                        style: const TextStyle(color: Colors.orangeAccent),
+                      const Text(
+                        'NEW',
+                        style: TextStyle(color: Colors.orangeAccent),
                       ),
                     ],
                   )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foxy_player/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'models/models.dart';
 import 'pages/pages.dart';
@@ -33,7 +34,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      theme: lightMode,
+      darkTheme: darkMode,
+      themeMode: Provider.of<ThemeProvider>(context).themeMode,
     );
   }
 }
