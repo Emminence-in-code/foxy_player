@@ -9,21 +9,24 @@ import 'package:list_all_videos/model/video_model.dart';
 class AudioItem extends StatelessWidget {
   const AudioItem({
     super.key,
-    required this.song,
+    required this.song, required this.onTap,
+
   });
   final Song song;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => AudioPlayerPage(
-              song: song,
-            ),
-          ),
-        );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => AudioPlayerPage(
+        //       song: song,
+        //     ),
+        //   ),
+        // );
+        onTap.call();
       },
       child: Container(
         padding: const EdgeInsets.symmetric(

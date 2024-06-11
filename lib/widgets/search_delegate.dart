@@ -115,7 +115,7 @@ class AudioSearchDelegate extends SearchDelegate {
     return ListView.builder(
         itemCount: matchingQuery.length,
         itemBuilder: (context, index) {
-          return AudioItem(song: matchingQuery[index]);
+          return AudioItem(song: matchingQuery[index],onTap: (){},);
         });
   }
 

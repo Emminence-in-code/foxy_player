@@ -8,6 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final fileProvider = FileProvider();
   await fileProvider.findFiles();
+
   runApp(
     MultiProvider(
       providers: [
@@ -20,6 +21,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => fileProvider,
         ),
+        //   ChangeNotifierProvider(
+        //   create: (_) => AudioProvider(),
+        // ),
       ],
       child: const MainApp(),
     ),

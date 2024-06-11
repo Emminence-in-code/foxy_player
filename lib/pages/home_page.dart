@@ -9,9 +9,9 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
   final screens = [
     const VideoScreen(),
-    const MusicScreen(),
+    MusicScreen(),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
