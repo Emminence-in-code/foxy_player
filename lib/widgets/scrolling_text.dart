@@ -60,7 +60,7 @@ class _ScrollingTextState extends State<ScrollingText>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 40,
       child: ListView(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,

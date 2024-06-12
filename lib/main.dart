@@ -7,7 +7,7 @@ import 'pages/pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final fileProvider = FileProvider();
-  await fileProvider.findFiles();
+  await fileProvider.readFiles();
 
   runApp(
     MultiProvider(
@@ -21,9 +21,6 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => fileProvider,
         ),
-        //   ChangeNotifierProvider(
-        //   create: (_) => AudioProvider(),
-        // ),
       ],
       child: const MainApp(),
     ),

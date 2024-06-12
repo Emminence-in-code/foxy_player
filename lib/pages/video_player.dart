@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
-import 'package:provider/provider.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   VideoPlayerPage({super.key, required this.videoPath});
@@ -25,7 +24,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         videoPlayerController: widget.videoPlayerController,
         looping: true,
         allowFullScreen: true,
-        autoPlay: true);
+        autoPlay: true,
+        fullScreenByDefault: true);
   }
 
   @override
@@ -34,10 +34,15 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     super.dispose();
   }
 
+  Future<void> initialize() async {
+    await widget.videoPlayerController.initialize();
+    chewieController.setVolume(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: widget.videoPlayerController.initialize(),
+        future: initialize(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

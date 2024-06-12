@@ -17,7 +17,7 @@ class VideoSearchDelegate extends SearchDelegate {
             }
             query = '';
           },
-          icon: const Icon(FontAwesomeIcons.x))
+          icon: const Icon(Icons.cancel))
     ];
   }
 
@@ -27,7 +27,7 @@ class VideoSearchDelegate extends SearchDelegate {
         onPressed: () {
           close(context, null); //for closing search bar
         },
-        icon: const Icon(FontAwesomeIcons.arrowLeft));
+        icon: const Icon(Icons.arrow_back_ios_new_rounded));
   }
 
   @override
@@ -88,7 +88,7 @@ class AudioSearchDelegate extends SearchDelegate {
             }
             query = '';
           },
-          icon: const Icon(FontAwesomeIcons.x))
+          icon: const Icon(Icons.cancel))
     ];
   }
 
@@ -98,7 +98,7 @@ class AudioSearchDelegate extends SearchDelegate {
         onPressed: () {
           close(context, null); //for closing search bar
         },
-        icon: const Icon(FontAwesomeIcons.arrowLeft));
+        icon: const Icon(Icons.arrow_back_ios_new_rounded));
   }
 
   @override
@@ -115,7 +115,10 @@ class AudioSearchDelegate extends SearchDelegate {
     return ListView.builder(
         itemCount: matchingQuery.length,
         itemBuilder: (context, index) {
-          return AudioItem(song: matchingQuery[index],onTap: (){},);
+          return AudioItem(
+            song: matchingQuery[index],
+            onTap: () {},
+          );
         });
   }
 

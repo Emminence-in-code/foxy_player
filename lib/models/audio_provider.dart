@@ -12,7 +12,10 @@ class AudioProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    audioPlayer.dispose().then((value) => super.dispose());
+    audioPlayer.dispose().then((value) {
+      super.dispose();
+      audioPlayer.dispose();
+    });
   }
 
   Future<Duration?> playAudio(String uri, {Song? song}) async {
@@ -52,7 +55,8 @@ class AudioProvider extends ChangeNotifier {
     if (playList.isEmpty) {
       return;
     }
-    int currentIndex = playList.indexOf(currentTrack!);
+    int currentIndex = playList
+        .indexWhere((element) => element.filePath == currentTrack!.filePath);
     if (currentIndex == playList.length - 1) {
       nextSong = playList[0];
       currentTrack = nextSong;
@@ -75,7 +79,8 @@ class AudioProvider extends ChangeNotifier {
     if (playList.isEmpty) {
       return;
     }
-    int currentIndex = playList.indexOf(currentTrack!);
+    int currentIndex = playList
+        .indexWhere((element) => element.filePath == currentTrack!.filePath);
     if (currentIndex == 0) {
       nextSong = playList.last;
       currentTrack = nextSong;
@@ -91,5 +96,10 @@ class AudioProvider extends ChangeNotifier {
 
   void setPlaylist(List<Song> songs) {
     playList = songs;
+  }
+
+  Future<void> seek(Duration position) async {
+    await audioPlayer.seek(position);
+    notifyListeners();
   }
 }

@@ -14,17 +14,22 @@ class FileProvider extends ChangeNotifier {
   List<FileSystemEntity> cacheFiles = [];
   final Audio _audio = Audio();
 
-  Future<void> findFiles() async {
+  Future<void> findFiles({bool rebuild = false}) async {
+    // write a code
+    // check if audiofiles and videofile #LISTS are empty
+    //  if empty find files and display loading
+    // if not empty findfiles without disturbing ui
+
     final Config appConfig = await Config.getInstance();
     bool hasPerm = await Permission.storage.isGranted;
-    
+
     if (hasPerm) {
       await _getVideoFiles();
       await _getAudioFiles();
       notifyListeners();
       final videos = getVideoFileList(videoFiles);
       final audios = getAudiofileList(audioFiles);
-  
+
       final Map<String, List<Map>> saveData = {
         'videos': videos,
         'audios': audios,
@@ -35,6 +40,9 @@ class FileProvider extends ChangeNotifier {
       writeJsonToFile(path: savePath, data: saveData);
     } else {
       await Permission.storage.request();
+    }
+    if (rebuild) {
+      notifyListeners();
     }
   }
 
@@ -64,7 +72,9 @@ class FileProvider extends ChangeNotifier {
 
     // get videos
     List<VideoDetails> videos = [];
-    final List videoPaths = filesAsJson['videos'];
+    final List videoPaths =
+        filesAsJson.containsKey('videos') ? filesAsJson['videos'] : [];
+    if (videoPaths.isEmpty) return;
     for (var videoItem in videoPaths) {
       VideoDetails video = VideoDetails(videoItem['video']);
       videos.add(video);
@@ -82,8 +92,7 @@ class FileProvider extends ChangeNotifier {
           album: audioItem['album'],
           title: audioItem['title'],
           artist: audioItem['artist'],
-          filePath: 'ww' //audioItem['filePath']
-          );
+          filePath: audioItem['filePath']);
       // videos.add(newSong);
 
       songs.add(newSong);
@@ -95,6 +104,7 @@ class FileProvider extends ChangeNotifier {
   }
 
   List<Map> getAudiofileList(List<Song> audioFiles) {
+    ///for serializing audio files
     final List<Map> mapAudioData = [];
     for (var audiofile in audioFiles) {
       mapAudioData.add({
@@ -108,14 +118,11 @@ class FileProvider extends ChangeNotifier {
   }
 
   List<Map> getVideoFileList(List<VideoDetails> videoFiles) {
+    /// for serializing video files
     final List<Map> mapVideoData = [];
     for (var videoFile in videoFiles) {
       mapVideoData.add({'video': videoFile.videoPath});
     }
     return mapVideoData;
   }
-
-
-
-
 }

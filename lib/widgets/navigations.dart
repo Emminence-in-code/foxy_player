@@ -14,6 +14,9 @@ class CustomNav extends StatelessWidget {
     final NavigationProvider provider =
         Provider.of<NavigationProvider>(context);
     return BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black.withOpacity(0.3),
+        backgroundColor: Colors.white54.withOpacity(0.5),
         currentIndex: provider.currentIndex,
         onTap: (value) {
           provider.updateCurrentIndex(newIndex: value);
@@ -44,6 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(isOnVideoPage ? "V I D E O S" : "M U S I C"),
       centerTitle: true,
+      backgroundColor: Colors.white.withOpacity(0.5),
       leading: IconButton(
         icon: const Icon(FontAwesomeIcons.bars),
         onPressed: () {

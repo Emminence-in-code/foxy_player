@@ -1,16 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foxy_player/models/models.dart';
 import 'package:foxy_player/pages/pages.dart';
 import 'package:foxy_player/services/song.dart';
 import 'package:list_all_videos/model/thumbnail_controller.dart';
 import 'package:list_all_videos/model/video_model.dart';
+import 'package:provider/provider.dart';
 
 class AudioItem extends StatelessWidget {
   const AudioItem({
     super.key,
-    required this.song, required this.onTap,
-
+    required this.song,
+    required this.onTap,
   });
   final Song song;
   final Function onTap;
@@ -19,37 +21,30 @@ class AudioItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => AudioPlayerPage(
-        //       song: song,
-        //     ),
-        //   ),
-        // );
         onTap.call();
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 12,
-        ),
+        padding:
+            const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 15),
         child: Row(
           children: [
             // PLACEHOLDER FOR IMAGE(REPLACE CONTAINER WITH IMAGE)
             Container(
-              padding: const EdgeInsets.all(23),
+              padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.only(right: 10),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: const BorderRadius.all(
                   Radius.circular(10),
                 ),
               ),
               child: CircleAvatar(
-                  backgroundColor: Colors.brown.shade500,
+                  backgroundColor: Colors.brown.shade200,
                   child: const Icon(Icons.music_note_sharp)),
             ),
-            Expanded(
+            Flexible(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     style: const TextStyle(
@@ -58,17 +53,7 @@ class AudioItem extends StatelessWidget {
                         fontSize: 16),
                     ' ${song.title}',
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(song.artist),
-                      const Text(
-                        'NEW',
-                        style: TextStyle(color: Colors.orangeAccent),
-                      ),
-                    ],
-                  )
+                  Text(song.artist)
                 ],
               ),
             )
@@ -88,7 +73,11 @@ class VideoItem extends StatelessWidget {
         ThumbnailController(videoPath: videoItem.videoPath);
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        await Provider.of<AudioProvider>(context, listen: false)
+            .audioPlayer
+            .stop();
+        // ignore: use_build_context_synchronously
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) =>
@@ -110,7 +99,7 @@ class VideoItem extends StatelessWidget {
               // padding: const EdgeInsets.all(23),
               margin: const EdgeInsets.only(right: 10),
               decoration: const BoxDecoration(
-                color: Colors.red,
+                color: Colors.black,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),
@@ -120,12 +109,25 @@ class VideoItem extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
-                      return Image.file(
-                        File(thumbnailController.thumbnailPath),
-                        fit: BoxFit.fill,
-                      );
+                      String thumbNail = thumbnailController.thumbnailPath;
+                      return SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                color: Colors.black,
+                              ),
+                              File(thumbNail),
+                              fit: BoxFit.cover,
+                            ),
+                          ));
                     }
-                    return Container();
+                    return Container(
+                      color: Colors.black,
+                    );
                   }),
             ),
             Expanded(
@@ -144,10 +146,6 @@ class VideoItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(videoItem.videoSize),
-                      const Text(
-                        'NEW',
-                        style: TextStyle(color: Colors.orangeAccent),
-                      ),
                     ],
                   )
                 ],

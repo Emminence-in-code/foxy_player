@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foxy_player/models/models.dart';
+import 'package:foxy_player/widgets/cirular_animted_container.dart';
+import 'package:foxy_player/widgets/scrolling_text.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 class AudioSlider extends StatelessWidget {
-  const AudioSlider({super.key, required this.value});
+  const AudioSlider(
+      {super.key,
+      required this.value,
+      required this.max,
+      required this.audioPlayer});
   final double? value;
+  final double max;
+  final AudioPlayer audioPlayer;
   @override
   Widget build(BuildContext context) {
     return Slider(
@@ -45,9 +53,12 @@ class _PausePlayButtonState extends State<PausePlayButton> {
           togglePlay();
         });
       },
-      child: Icon(widget.audioPlayer.playing
-          ? Icons.pause_circle_rounded
-          : Icons.play_arrow_rounded),
+      child: Icon(
+          size: 30,
+          color: Colors.brown,
+          widget.audioPlayer.playing
+              ? Icons.pause_circle_rounded
+              : Icons.play_arrow_rounded),
     );
   }
 }
@@ -69,32 +80,33 @@ class BottomAudioPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AudioProvider>(builder: (context, audio, _) {
       return Container(
-        color: Colors.white,
+        padding: const EdgeInsets.only(left: 20, right: 10),
+        height: 65,
+        color: Colors.brown.shade100,
         child: Row(children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            width: 50,
-            height: 50,
-          ),
+          RotatingIconContainer(audioPlayer: audio.audioPlayer, isBig: false),
           const SizedBox(
             width: 20,
           ),
           Expanded(
             child: Column(
               children: [
-                Text(title),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: ScrollingText(text: title),
+                ),
                 Row(
                   children: [
+                    const SizedBox(
+                      width: 35,
+                    ),
                     playerButton(
                         onTap: () async {
                           await onPrev.call();
                         },
-                        icon: FontAwesomeIcons.arrowLeft),
+                        icon: Icons.skip_previous_rounded),
                     const SizedBox(
-                      width: 25,
+                      width: 30,
                     ),
                     StreamBuilder(
                         stream: audio.audioPlayer.playingStream,
@@ -111,13 +123,13 @@ class BottomAudioPlayer extends StatelessWidget {
                           return Container();
                         }),
                     const SizedBox(
-                      width: 25,
+                      width: 30,
                     ),
                     playerButton(
                         onTap: () async {
                           await onNext.call();
                         },
-                        icon: FontAwesomeIcons.arrowRight),
+                        icon: Icons.skip_next_rounded),
                   ],
                 )
               ],

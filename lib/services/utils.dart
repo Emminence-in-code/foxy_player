@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 void writeJsonToFile({required String path, required Map data}) {
-  print('saved');
   final String serializedData = json.encode(data);
   final File file = File(path);
   file.createSync(recursive: true);

@@ -12,12 +12,12 @@ class NeuBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.brown.shade500,
+              color: Colors.brown.shade300,
               blurRadius: 15,
               offset: const Offset(1, 1),
             ),
             BoxShadow(
-              color: Colors.brown.shade500,
+              color: Colors.brown.shade300,
               blurRadius: 15,
               offset: const Offset(-1, -1),
             )

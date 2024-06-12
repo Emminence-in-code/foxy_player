@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class RotatingIconContainer extends StatefulWidget {
-  const RotatingIconContainer({super.key, required this.audioPlayer});
+  const RotatingIconContainer(
+      {super.key, required this.audioPlayer, required this.isBig});
   final AudioPlayer audioPlayer;
+  final bool isBig;
   @override
   _RotatingIconContainerState createState() => _RotatingIconContainerState();
 }
@@ -47,17 +49,17 @@ class _RotatingIconContainerState extends State<RotatingIconContainer>
     return AnimatedBuilder(
       animation: _controller,
       child: Container(
-        width: 200.0,
-        height: 200.0,
-        decoration: const BoxDecoration(
+        width: widget.isBig ? 200.0 : 50,
+        height: widget.isBig ? 200.0 : 50,
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.brown,
+          color: Colors.brown.shade200,
         ),
-        child: const Center(
+        child: Center(
           child: Icon(
             Icons.music_note,
             color: Colors.white,
-            size: 80,
+            size: widget.isBig ? 80 : 20,
           ),
         ),
       ),
