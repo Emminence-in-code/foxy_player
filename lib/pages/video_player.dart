@@ -1,64 +1,69 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';  // Ensure this is imported
 
 class VideoPlayerPage extends StatefulWidget {
-  VideoPlayerPage({super.key, required this.videoPath});
   final String videoPath;
-  late VideoPlayerController videoPlayerController;
+
+  const VideoPlayerPage({super.key, required this.videoPath});
 
   @override
   State<VideoPlayerPage> createState() => _VideoPlayerPageState();
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  late VideoPlayerController videoPlayerController; // Correct type declaration
   late ChewieController chewieController;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    widget.videoPlayerController =
-        VideoPlayerController.file(File(widget.videoPath));
+
+    // Initialize the VideoPlayerController
+    videoPlayerController = VideoPlayerController.file(File(widget.videoPath));
+    
+    // Initialize the ChewieController
     chewieController = ChewieController(
-        videoPlayerController: widget.videoPlayerController,
-        looping: true,
-        allowFullScreen: true,
-        autoPlay: true,
-        fullScreenByDefault: true);
+      videoPlayerController: videoPlayerController,
+      customControls: MaterialControls(showPlayButton: true),
+      looping: true,
+      allowFullScreen: true,
+      autoPlay: true,
+      fullScreenByDefault: false,
+    );
   }
 
   @override
   void dispose() {
-    widget.videoPlayerController.dispose();
+    // Dispose the controllers to free up resources
+    videoPlayerController.dispose();
+    chewieController.dispose();  // Don't forget to dispose of ChewieController too
     super.dispose();
   }
 
-  Future<void> initialize() async {
-    await widget.videoPlayerController.initialize();
-    chewieController.setVolume(1);
+  Future<void> initializeVideo() async {
+    await videoPlayerController.initialize();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: initialize(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (!chewieController.isPlaying) {
-              chewieController.play();
-            }
-            return Chewie(
-              controller: chewieController,
-            );
-          }
+      future: initializeVideo(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator.adaptive(),
           );
-        });
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return Chewie(
+            controller: chewieController,
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator.adaptive(),
+        );
+      },
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:foxy_player/services/song.dart';
 import 'package:list_all_videos/model/video_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -29,9 +30,9 @@ class Audio {
       //         uriType: UriType.INTERNAL,
       //         ignoreCase: true))[0]
       //     .uri;
-
+      final artWork = await _audioQuery.queryArtwork(songInfo.id, ArtworkType.AUDIO,);
       songs.add(
-        Song(
+        Song(image: artWork!,
           title: songInfo.title,
           artist: songInfo.artist!,
           album: songInfo.album!,

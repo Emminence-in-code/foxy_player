@@ -88,12 +88,11 @@ class FileProvider extends ChangeNotifier {
     List<Song> songs = [];
     final List audios = filesAsJson['audios'];
     for (var audioItem in audios) {
-      Song newSong = Song(
+      Song newSong = Song(image: audioItem['image'],
           album: audioItem['album'],
           title: audioItem['title'],
           artist: audioItem['artist'],
           filePath: audioItem['filePath']);
-      // videos.add(newSong);
 
       songs.add(newSong);
     }
@@ -108,6 +107,7 @@ class FileProvider extends ChangeNotifier {
     final List<Map> mapAudioData = [];
     for (var audiofile in audioFiles) {
       mapAudioData.add({
+        'image':audiofile.image,
         'title': audiofile.title,
         'album': audiofile.album,
         'artist': audiofile.artist,

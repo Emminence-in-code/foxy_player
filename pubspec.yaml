@@ -18,7 +18,9 @@ dependencies:
   list_all_videos: ^1.2.0
   on_audio_query: ^2.9.0
   just_audio: ^0.9.20
+  video_player: ^2.8.5
   # just_audio_background:
+  # audio_service:
 
 
 dev_dependencies:

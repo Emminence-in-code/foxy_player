@@ -5,9 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foxy_player/models/models.dart';
 import 'package:foxy_player/services/song.dart';
 import 'package:foxy_player/widgets/audio_player.dart';
-import 'package:foxy_player/widgets/cirular_animted_container.dart';
-import 'package:foxy_player/widgets/neu_box.dart';
-import 'package:foxy_player/widgets/scrolling_text.dart';
+import 'package:foxy_player/widgets/util_widgets/cirular_animted_container.dart';
+import 'package:foxy_player/widgets/util_widgets/neu_box.dart';
+import 'package:foxy_player/widgets/util_widgets/scrolling_text.dart';
 
 class AudioPlayerPage extends StatelessWidget {
   const AudioPlayerPage(
@@ -60,7 +60,7 @@ class AudioPlayerPage extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 300,
-                          child: RotatingIconContainer(
+                          child: RotatingIconContainer(image: song.image,
                             isBig: true,
                             audioPlayer: audioProvider.audioPlayer,
                           ),

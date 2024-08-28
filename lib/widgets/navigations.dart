@@ -48,21 +48,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(isOnVideoPage ? "V I D E O S" : "M U S I C"),
       centerTitle: true,
       backgroundColor: Colors.white.withOpacity(0.5),
-      leading: IconButton(
-        icon: const Icon(FontAwesomeIcons.bars),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-      ),
       actions: [
         IconButton(
-            onPressed: () {
-              showSearch(
-                  context: context,
-                  delegate: isOnVideoPage
-                      ? VideoSearchDelegate()
-                      : AudioSearchDelegate());
-            },
+            onPressed: () {},
             icon: const Icon(FontAwesomeIcons.magnifyingGlass))
       ],
     );

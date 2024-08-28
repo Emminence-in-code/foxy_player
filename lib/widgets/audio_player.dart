@@ -1,8 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foxy_player/models/models.dart';
-import 'package:foxy_player/widgets/cirular_animted_container.dart';
-import 'package:foxy_player/widgets/scrolling_text.dart';
+import 'package:foxy_player/widgets/util_widgets/cirular_animted_container.dart';
+import 'package:foxy_player/widgets/util_widgets/scrolling_text.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
@@ -70,12 +72,14 @@ class BottomAudioPlayer extends StatelessWidget {
       required this.onPrev,
       required this.onNext,
       required this.title,
-      required this.isPlaying});
+      required this.isPlaying, required this.image});
   final Future Function() onPlay;
   final Future Function() onPrev;
   final Future Function() onNext;
   final String title;
   final bool isPlaying;
+  final Uint8List image;
+  
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioProvider>(builder: (context, audio, _) {
@@ -84,7 +88,7 @@ class BottomAudioPlayer extends StatelessWidget {
         height: 65,
         color: Colors.brown.shade100,
         child: Row(children: [
-          RotatingIconContainer(audioPlayer: audio.audioPlayer, isBig: false),
+          RotatingIconContainer(audioPlayer: audio.audioPlayer, isBig: false, image: image,),
           const SizedBox(
             width: 20,
           ),

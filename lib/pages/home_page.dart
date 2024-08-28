@@ -17,7 +17,6 @@ class HomePage extends StatelessWidget {
         create: (context) => AudioProvider(),
         builder: (context, audio) {
           return Scaffold(
-            drawer: const CustomDrawer(),
             appBar: const CustomAppBar(),
             body: Consumer<NavigationProvider>(
               builder: (context, navProvider, _) {

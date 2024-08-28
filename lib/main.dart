@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foxy_player/pages/ignore.dart';
 import 'package:foxy_player/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'models/models.dart';
@@ -21,6 +22,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => fileProvider,
         ),
+        ChangeNotifierProvider(
+          create: (_) => AudioProvider(),
+        )
       ],
       child: const MainApp(),
     ),
@@ -34,7 +38,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const FoxySplashScreen(),
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: Provider.of<ThemeProvider>(context).themeMode,

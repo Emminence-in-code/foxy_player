@@ -6,8 +6,17 @@ class AudioProvider extends ChangeNotifier {
   final AudioPlayer audioPlayer;
   String? uri;
   List<Song> playList = [];
-  Song? currentTrack;
-  bool visible = false;
+  Song? _currentTrack;
+  Song get currentTrack => _currentTrack!;
+  bool _visible = false;
+
+  bool get visible => _visible;
+
+  set visible(bool value) {
+    _visible = value;
+    notifyListeners();
+  }
+
   AudioProvider() : audioPlayer = AudioPlayer();
 
   @override
@@ -18,8 +27,14 @@ class AudioProvider extends ChangeNotifier {
     });
   }
 
+  set currentTrack(Song data) {
+    _currentTrack = data;
+    visible = true;
+    notifyListeners();
+  }
+
   Future<Duration?> playAudio(String uri, {Song? song}) async {
-    /// perform error handling from where function is being called
+    ///! perform error handling from where function is being called
 
     final Duration? duration =
         await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(uri)));
@@ -50,21 +65,21 @@ class AudioProvider extends ChangeNotifier {
   }
 
   Future<void> playNext() async {
-    await audioPlayer.pause();
+    await audioPlayer.stop();
     Song nextSong;
     if (playList.isEmpty) {
       return;
     }
     int currentIndex = playList
-        .indexWhere((element) => element.filePath == currentTrack!.filePath);
+        .indexWhere((element) => element.filePath == _currentTrack!.filePath);
     if (currentIndex == playList.length - 1) {
       nextSong = playList[0];
-      currentTrack = nextSong;
+      _currentTrack = nextSong;
 
       notifyListeners();
     } else {
       nextSong = playList[currentIndex + 1];
-      currentTrack = nextSong;
+      _currentTrack = nextSong;
 
       notifyListeners();
     }
@@ -80,14 +95,14 @@ class AudioProvider extends ChangeNotifier {
       return;
     }
     int currentIndex = playList
-        .indexWhere((element) => element.filePath == currentTrack!.filePath);
+        .indexWhere((element) => element.filePath == _currentTrack!.filePath);
     if (currentIndex == 0) {
       nextSong = playList.last;
-      currentTrack = nextSong;
+      _currentTrack = nextSong;
       notifyListeners();
     } else {
       nextSong = playList[currentIndex - 1];
-      currentTrack = nextSong;
+      _currentTrack = nextSong;
       notifyListeners();
     }
     await playAudio(nextSong.filePath, song: nextSong);
@@ -102,4 +117,6 @@ class AudioProvider extends ChangeNotifier {
     await audioPlayer.seek(position);
     notifyListeners();
   }
+
+
 }
