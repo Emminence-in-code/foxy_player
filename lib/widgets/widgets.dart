@@ -5,3 +5,5 @@ export 'util_widgets/theme_switch.dart';
 export 'audio_player.dart';
 export 'util_widgets/cirular_animted_container.dart';
 export 'empty_page.dart';
+export 'util_widgets/neu_box.dart';
+export 'util_widgets/scrolling_text.dart';

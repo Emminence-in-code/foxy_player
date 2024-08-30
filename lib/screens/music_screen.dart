@@ -16,7 +16,7 @@ class MusicScreen extends StatelessWidget {
       children: [
         RefreshIndicator(
           onRefresh: () async {
-            Provider.of<FileProvider>(context).findFiles(rebuild: true);
+            await Provider.of<FileProvider>(context).findFiles(rebuild: true);
           },
           child: Consumer<FileProvider>(builder: (context, fileProvider, _) {
             final playlist = fileProvider.audioFiles;
@@ -39,9 +39,9 @@ class MusicScreen extends StatelessWidget {
 
                   return AudioItem(
                     song: song,
-                    onTap: () async{
+                    onTap: () async {
                       audio.currentTrack = song;
-                    await audio.playAudio(song.filePath);
+                      await audio.playAudio(song.filePath);
                     },
                   );
                 });
@@ -66,11 +66,14 @@ class MusicScreen extends StatelessWidget {
                   );
                 }));
               },
-              onHorizontalDragEnd: (details) {
+              onHorizontalDragEnd: (details) async {
                 if (details.primaryVelocity! < 0.0) {
+                  await audio.playPrev();
+
                   // prev
                 } else if (details.primaryVelocity! > 0.0) {
                   // next
+                  await audio.playNext();
                 }
               },
               child: BottomAudioPlayer(
@@ -84,7 +87,8 @@ class MusicScreen extends StatelessWidget {
                 onPrev: () async {
                   await audio.playPrev();
                 },
-                isPlaying: audio.audioPlayer.playing, image: audio.currentTrack.image,
+                isPlaying: audio.audioPlayer.playing,
+                image: audio.currentTrack.image,
               ),
             );
           }),

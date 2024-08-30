@@ -24,7 +24,7 @@ class FileProvider extends ChangeNotifier {
     bool hasPerm = await Permission.storage.isGranted;
 
     if (hasPerm) {
-      await _getVideoFiles();
+      _getVideoFiles().then((value) => null);
       await _getAudioFiles();
       notifyListeners();
       final videos = getVideoFileList(videoFiles);
@@ -88,7 +88,8 @@ class FileProvider extends ChangeNotifier {
     List<Song> songs = [];
     final List audios = filesAsJson['audios'];
     for (var audioItem in audios) {
-      Song newSong = Song(image: audioItem['image'],
+      Song newSong = Song(
+          image: audioItem['image'],
           album: audioItem['album'],
           title: audioItem['title'],
           artist: audioItem['artist'],
@@ -107,7 +108,7 @@ class FileProvider extends ChangeNotifier {
     final List<Map> mapAudioData = [];
     for (var audiofile in audioFiles) {
       mapAudioData.add({
-        'image':audiofile.image,
+        'image': audiofile.image,
         'title': audiofile.title,
         'album': audiofile.album,
         'artist': audiofile.artist,

@@ -13,11 +13,11 @@ class _FoxySplashScreenState extends State<FoxySplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () async{
+    Future.delayed(const Duration(seconds: 4), () async {
       // duration of the splash screen
-    await  Navigator.of(context).push(MaterialPageRoute(builder: (context){
-      return HomePage();
-    }));
+      await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return HomePage();
+      }));
     });
   }
 

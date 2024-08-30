@@ -1,15 +1,15 @@
 name: foxy_player
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: ">=3.2.3 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  
+
   chewie:
   provider:
   path_provider:
@@ -19,9 +19,8 @@ dependencies:
   on_audio_query: ^2.9.0
   just_audio: ^0.9.20
   video_player: ^2.8.5
-  # just_audio_background:
-  # audio_service:
-
+  just_audio_background:
+  audio_service:
 
 dev_dependencies:
   flutter_test:
