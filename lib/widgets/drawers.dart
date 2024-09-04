@@ -10,46 +10,55 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        backgroundColor: Colors.white,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 160,
-            ),
-            const Divider(),
-            const SizedBox(
-              height: 25,
-            ),
-            DrawerItem(
-              iconData: FontAwesomeIcons.gears,
-              label: 'SETTINGS',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return const Scaffold();
-                  }),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            DrawerItem(
-              iconData: FontAwesomeIcons.shareNodes,
-              label: 'SHARE',
-              onTap: () {},
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            DrawerItem(
-              iconData: FontAwesomeIcons.star,
-              label: 'RATE US',
-              onTap: () {},
-            ),
-          ],
-        ));
+      backgroundColor: Colors.white,
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          Container(
+            height: 50,
+            width: 50,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/new_art.png'))),
+          ),
+          const Divider(),
+          const SizedBox(
+            height: 25,
+          ),
+          DrawerItem(
+            iconData: FontAwesomeIcons.gears,
+            label: 'SETTINGS',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) {
+                  return const Scaffold();
+                }),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          DrawerItem(
+            iconData: FontAwesomeIcons.shareNodes,
+            label: 'SHARE',
+            onTap: () {},
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          DrawerItem(
+            iconData: FontAwesomeIcons.star,
+            label: 'RATE US',
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -28,7 +28,7 @@ class _FoxySplashScreenState extends State<FoxySplashScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/new_art.png'),
+          Image.asset('assets/images/new_art.png'),
           const SizedBox(
             height: 10,
           ),

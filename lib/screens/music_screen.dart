@@ -12,88 +12,38 @@ class MusicScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AudioProvider audio = Provider.of<AudioProvider>(context);
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: () async {
-            await Provider.of<FileProvider>(context).findFiles(rebuild: true);
-          },
-          child: Consumer<FileProvider>(builder: (context, fileProvider, _) {
-            final playlist = fileProvider.audioFiles;
-            audio.setPlaylist(playlist);
-            if (fileProvider.audioFiles.isEmpty) {
-              fileProvider.findFiles(rebuild: true);
-              audio.setPlaylist(playlist);
-
-              return const EmptyPage(
-                  icon: Icon(FontAwesomeIcons.fileAudio),
-                  text: Text(
-                      'No Audios Yet \n if this persists contact dev team'));
-            }
-
-            fileProvider.findFiles();
-            return ListView.builder(
-                itemCount: playlist.length,
-                itemBuilder: (context, index) {
-                  final song = playlist[index];
-
-                  return AudioItem(
-                    song: song,
-                    onTap: () async {
-                      audio.currentTrack = song;
-                      await audio.playAudio(song.filePath);
-                    },
-                  );
-                });
-          }),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Consumer<AudioProvider>(builder: (context, aud, _) {
-            if (aud.audioPlayer.playing) {
-              aud.visible = true;
-            }
-            if (!aud.visible) return Container();
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (builder) {
-                  return AudioPlayerPage(
-                    song: audio.currentTrack,
-                    audioProvider: audio,
-                  );
-                }));
-              },
-              onHorizontalDragEnd: (details) async {
-                if (details.primaryVelocity! < 0.0) {
-                  await audio.playPrev();
-
-                  // prev
-                } else if (details.primaryVelocity! > 0.0) {
-                  // next
-                  await audio.playNext();
-                }
-              },
-              child: BottomAudioPlayer(
-                title: audio.currentTrack.title,
-                onNext: () async {
-                  await audio.playNext();
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Provider.of<FileProvider>(context).findFiles(rebuild: true);
+      },
+      child: Consumer<FileProvider>(builder: (context, fileProvider, _) {
+        final playlist = fileProvider.audioFiles;
+        audio.setPlaylist(playlist);
+        if (fileProvider.audioFiles.isEmpty) {
+          fileProvider.findFiles(rebuild: true);
+          audio.setPlaylist(playlist);
+    
+          return const EmptyPage(
+              icon: Icon(FontAwesomeIcons.fileAudio),
+              text: Text(
+                  'No Audios Yet \n if this persists contact dev team'));
+        }
+    
+        fileProvider.findFiles();
+        return ListView.builder(
+            itemCount: playlist.length,
+            itemBuilder: (context, index) {
+              final song = playlist[index];
+    
+              return AudioItem(
+                song: song,
+                onTap: () async {
+                  audio.currentTrack = song;
+                  await audio.playAudio(song.filePath);
                 },
-                onPlay: () async {
-                  await audio.togglePlay();
-                },
-                onPrev: () async {
-                  await audio.playPrev();
-                },
-                isPlaying: audio.audioPlayer.playing,
-                image: audio.currentTrack.image,
-              ),
-            );
-          }),
-        )
-      ],
+              );
+            });
+      }),
     );
   }
 }

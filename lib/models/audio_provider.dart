@@ -54,6 +54,17 @@ class AudioProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
+
+
+
+
+
+
+
+//todo arrange Play Back Controls
+
   Future<void> togglePlay() async {
     if (audioPlayer.playing) {
       await audioPlayer.pause();

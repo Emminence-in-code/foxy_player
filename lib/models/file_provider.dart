@@ -24,7 +24,7 @@ class FileProvider extends ChangeNotifier {
     bool hasPerm = await Permission.storage.isGranted;
 
     if (hasPerm) {
-      _getVideoFiles().then((value) => null);
+      await _getVideoFiles();
       await _getAudioFiles();
       notifyListeners();
       final videos = getVideoFileList(videoFiles);
